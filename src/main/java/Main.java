@@ -1,9 +1,20 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+//        int[] arr = {1,1,2};
+//        removeDuplicate(arr);
+//        int[] arr = {3,2,2,3};
+//        System.out.println(removeElement(arr,2));
+//        int[] nums1 ={0};
+//        int[] nums2 ={1};
+//
+//        merge(nums1, 0, nums2, 1);
+        int[] nums = {0,1,1,3,3};
 
+        System.out.println(findMaxAverage(nums, 4));
     }
 
     //1. Two Sum:
@@ -70,5 +81,102 @@ public class Main {
             }
         }
         return i + 1;
+    }
+
+    public static int removeDuplicate(int[] nums) {
+        int i=0;
+        int j=1;
+        while(j<nums.length){
+            if(nums[i]==nums[j]){
+                j++;
+            }
+            else{
+                i++;
+                int temp = nums[i];
+                nums[i]=nums[j];
+                nums[j] = temp;
+                j++;
+            }
+        }
+        return i;
+    }
+
+    //27. Remove Element
+    public static int removeElement(int[] nums, int val) {
+        int i=0;
+        int j=nums.length-1;
+        while(i<=j){
+            if(nums[j]==val){
+                j--;
+            }
+            else{
+                if(nums[i]!=val){
+                    i++;
+                }
+                else if(nums[i]==val) {
+                    nums[i]=nums[j];
+                    nums[j]=val;
+                    j--;
+                    i++;
+                }
+            }
+        }
+        return j+1;
+    }
+
+    //28. Find the Index of the First Occurrence in a String
+    public static int strStr(String haystack, String needle) {
+        int i=0; int j=0;
+
+        while(i<haystack.length()){
+            if(haystack.charAt(i)==needle.charAt(j)){
+                i++;
+                j++;
+                if(j==needle.length()){
+                    return i-j;
+                }
+            } else{
+                i = i-j+1;
+                j=0;
+            }
+        }
+        return -1;
+    }
+
+    //88. Merge Sorted Array
+    public static void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i= m-1;int j = n-1;
+
+        for(int k=nums1.length-1;k>=0;k--){
+            if(i>=0 && j>=0 && nums1[i]>=nums2[j]){
+                nums1[k] = nums1[i];
+                i--;
+            } else if( i>=0 && j>=0 && nums1[i]<nums2[j]){
+                nums1[k] = nums2[j];
+                j--;
+            } else{
+                if(i>=0){
+                    while(i>=0) nums1[k--] = nums1[i--];
+                }else{
+                    while(j>=0) nums1[k--] = nums2[j--];
+                }
+            }
+        }
+    }
+
+    //643. Maximum Average Subarray I
+    public static double findMaxAverage(int[] nums, int k) {
+        int sum = 0;
+        int maxSum = 0;
+        for(int i=0;i<k;i++){
+            sum+=nums[i];
+        }
+        maxSum = sum;
+        for(int i=k;i<nums.length;i++){
+            sum-=nums[i-k];
+            sum+=nums[i];
+            maxSum=Math.max(maxSum, sum);
+        }
+        return (double)maxSum/k;
     }
 }
