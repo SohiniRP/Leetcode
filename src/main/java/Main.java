@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,9 +10,16 @@ public class Main {
 //        int[] nums2 ={1};
 //
 //        merge(nums1, 0, nums2, 1);
-        int[] nums = {0,1,1,3,3};
-
-        System.out.println(findMaxAverage(nums, 4));
+//        int[] nums = {0,1,1,3,3};
+//        System.out.println(findMaxAverage(nums, 4));
+//        int[] nums = {1,2,3,1,2,3};
+//        System.out.println(containsNearbyDuplicate(nums, 2));
+//        String s = "abciiidef";
+//        System.out.println(maxVowels(s,3));
+//        String s = "A man, a plan, a canal: Panama";
+//        isPalindrome(s);
+        int[] nums ={0,1,0,3,12};
+        moveZeroes(nums);
     }
 
     //1. Two Sum:
@@ -178,5 +183,77 @@ public class Main {
             maxSum=Math.max(maxSum, sum);
         }
         return (double)maxSum/k;
+    }
+
+    //219. Contains Duplicate II
+    public static boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> temp = new HashSet<>();
+        int left = 0;
+        for(int right=0;right<nums.length;right++){
+            if(temp.contains(nums[right])) return true;
+
+            temp.add(nums[right]);
+
+            if(right-left>=k) {
+                temp.remove(nums[left]);
+                left++;
+            }
+        }
+        return false;
+    }
+
+    //1456. Maximum Number of Vowels in a Substring of Given Length
+    public static int maxVowels(String s, int k) {
+        int length = 0;
+        int left = 0;
+        int maxLength = 0;
+        for(int right=0;right<k;right++){
+            if(s.charAt(right)=='a'|| s.charAt(right)=='e'|| s.charAt(right)=='i'
+                    || s.charAt(right)=='o' || s.charAt(right)=='u') {
+                length++;
+            }
+        }
+        maxLength = length;
+        for(int i =k;i<s.length();i++){
+            if(s.charAt(left)=='a'|| s.charAt(left)=='e'|| s.charAt(left)=='i'
+                    || s.charAt(left)=='o' || s.charAt(left)=='u') {
+                length--;
+            }
+            left++;
+            if(s.charAt(i)=='a'|| s.charAt(i)=='e'|| s.charAt(i)=='i'
+                    || s.charAt(i)=='o' || s.charAt(i)=='u'){
+                length++;
+            }
+            maxLength=Math.max(maxLength, length);
+        }
+
+        return maxLength;
+    }
+
+    //125. Valid Palindrome
+    public static boolean isPalindrome(String s) {
+        s=s.toLowerCase().replaceAll("[^a-zA-Z0-9]","");
+
+        int left =0;
+        int right = s.length()-1;
+        while(left<=right){
+            if(s.charAt(left)==s.charAt(right)){
+                left++;right--;
+            } else return false;
+        }
+        return true;
+    }
+
+    //283. Move Zeroes
+    public static void moveZeroes(int[] nums) {
+        int i=0;
+        for(int j=1;j<nums.length;j++){
+            if(nums[j]==0 && nums[i]==0) continue;
+            else if(nums[j]!=0 && nums[i]==0){
+                nums[i] = nums[j];
+                nums[j]=0;
+                i++;
+            } else if(nums[i]!=0)i++;
+        }
     }
 }
