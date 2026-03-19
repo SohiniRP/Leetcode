@@ -18,8 +18,12 @@ public class Main {
 //        System.out.println(maxVowels(s,3));
 //        String s = "A man, a plan, a canal: Panama";
 //        isPalindrome(s);
-        int[] nums ={0,1,0,3,12};
-        moveZeroes(nums);
+//        int[] nums ={0,1,0,3,12};
+//        moveZeroes(nums);
+//        String s = "IceCreAm";
+//        System.out.println(reverseVowels(s));
+        String s = "ABAB";
+        System.out.println(characterReplacement(s,2));
     }
 
     //1. Two Sum:
@@ -255,5 +259,72 @@ public class Main {
                 i++;
             } else if(nums[i]!=0)i++;
         }
+    }
+
+    //345. Reverse Vowels of a String
+    public static String reverseVowels(String s) {
+        char[] arr = s.toCharArray();
+        int i =0; int j= s.length()-1;
+        while(i<=j){
+            if(Character.toLowerCase(arr[i])!='a' && Character.toLowerCase(arr[i])!='e' && Character.toLowerCase(arr[i])!='i' && Character.toLowerCase(arr[i])!='o' && Character.toLowerCase(arr[i])!='u') i++;
+            else if(Character.toLowerCase(arr[j])!='a' && Character.toLowerCase(arr[j])!='e' && Character.toLowerCase(arr[j])!='i' && Character.toLowerCase(arr[j])!='o' && Character.toLowerCase(arr[j])!='u') j--;
+
+            else{
+                char temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                i++; j--;
+            }
+        }
+        return new String(arr);
+    }
+
+    //557. Reverse Words in a String III
+    public static String reverseWords(String s) {
+        char[] arr = s.toCharArray();
+        int left = 0;
+
+        for (int right = 0; right <= arr.length; right++) {
+
+            if (right == arr.length || arr[right] == ' ') {
+                reverse(arr, left, right - 1);
+                left = right + 1;
+            }
+        }
+
+        return new String(arr);
+    }
+
+    private static void reverse(char[] arr, int l, int r) {
+        while (l < r) {
+            char temp = arr[l];
+            arr[l] = arr[r];
+            arr[r] = temp;
+            l++;
+            r--;
+        }
+    }
+
+    public static int characterReplacement(String s, int k) {
+        int[] freq = new int[26];
+        int left = 0, maxFreq = 0, maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            freq[c - 'A']++;
+
+            // Track max frequency in current window
+            maxFreq = Math.max(maxFreq, freq[c - 'A']);
+
+            // If more than k replacements needed → shrink
+            while ((right - left + 1) - maxFreq > k) {
+                freq[s.charAt(left) - 'A']--;
+                left++;
+            }
+
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
     }
 }
