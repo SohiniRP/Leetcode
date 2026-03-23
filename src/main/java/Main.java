@@ -327,4 +327,60 @@ public class Main {
 
         return maxLength;
     }
+
+    //594. Longest Harmonious Subsequence
+    public static int findLHS(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int maxFreq = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i],0)+1);
+        }
+        for(int key:map.keySet()){
+            if(map.containsKey(key+1)){
+                maxFreq = Math.max(maxFreq, map.get(key+1)+map.get(key));
+            }
+        }
+        return maxFreq;
+    }
+
+    //1876. Substrings of Size Three with Distinct Characters
+    public static int countGoodSubstrings(String s) {
+        int count = 0;
+
+        for (int i = 0; i <= s.length() - 3; i++) {
+            char a = s.charAt(i);
+            char b = s.charAt(i + 1);
+            char c = s.charAt(i + 2);
+
+            if (a != b && a != c && b != c) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    //349. Intersection of Two Arrays
+    public static int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> result = new HashSet<>();
+
+        for (int num : nums1) {
+            set1.add(num);
+        }
+        for (int num : nums2) {
+            if (set1.contains(num)) {
+                result.add(num);
+            }
+        }
+        int[] res = new int[result.size()];
+        int i = 0;
+        for (int num : result) {
+            res[i++] = num;
+        }
+
+        return res;
+    }
+
 }
