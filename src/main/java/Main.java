@@ -22,8 +22,18 @@ public class Main {
 //        moveZeroes(nums);
 //        String s = "IceCreAm";
 //        System.out.println(reverseVowels(s));
-        String s = "ABAB";
-        System.out.println(characterReplacement(s,2));
+//        String s = "ABAB";
+//        System.out.println(characterReplacement(s,2));
+
+//        String s = "aababcabc";
+//        System.out.println(countGoodSubstring(s));
+//        int[] nums1 = {4,9,5};
+//        int[] nums2 = {9,4,9,8,4};
+//
+//        System.out.println((intersect(nums1,nums2)).toString());
+
+        String s = "abcdefg";
+        System.out.println(reverseStr(s,2));
     }
 
     //1. Two Sum:
@@ -383,4 +393,92 @@ public class Main {
         return res;
     }
 
+    public static int countGoodSubstring(String s) {
+        Set<Character> tracker = new HashSet<>();
+        int i=0;
+        int count=0;
+
+        tracker.add(s.charAt(i));
+        for(int j=1;j<3;j++){
+            if(!tracker.contains(s.charAt(j))) tracker.add(s.charAt(j));
+        }
+        if(tracker.size()==3) count++;
+        for(int j=3;j<s.length();j++){
+            tracker.remove(s.charAt(i));
+            i++;
+            tracker.add(s.charAt(i));
+            tracker.add(s.charAt(j));
+            if(tracker.size()==3) count++;
+        }
+        return count;
+    }
+
+    //350. Intersection of Two Arrays II
+    public static int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+        List<Integer> list = new ArrayList<>();
+        for(int num: nums1){
+            map.put(num, map.getOrDefault(num, 0)+1);
+        }
+        for(int num: nums2){
+            if(map.get(num)!=null && map.get(num)!=0){
+                list.add(num);
+                map.put(num, map.getOrDefault(num,0)-1);
+            }
+        }
+        int[] result = new int[list.size()];
+        int i= 0;
+        for(int num: list){
+            result[i++] = num;
+        }
+        return result;
+    }
+
+    //392. Is Subsequence
+    public static boolean isSubsequence(String s, String t) {
+        int i=0; int j=0;
+
+        if(s.equals("")) return true;
+        while(i<s.length()&&j<t.length()){
+            if(s.charAt(i)==t.charAt(j)){
+                i++;j++;
+                if(i==s.length()) return true;
+            } else j++;
+        }
+        return false;
+    }
+
+    public static String reverseStr(String s, int k) {
+        int length = s.length();
+        int i =0;
+        while(i<length) {
+            if (length < k) {
+                reverse(s, k);
+                i=length;
+            } else if (length >= k && length < 2 * k) {
+                reverse(s.substring(i, k + 1), k);
+                length = length-k;
+                i=k;
+            } else {
+                s = reverse(s.substring(i, 2 * k), k);
+                length = length-2 * k;
+                i=2*k;
+            }
+        }
+        return s;
+    }
+
+    public static String reverse(String s, int k){
+        char[] string = s.toCharArray();
+        int i=0;int j=k-1;
+        while(i<=j){
+            char temp = string[i];
+            string[i] =string[j];
+            string[j]=temp;
+            i++;j--;
+        }
+        s = new String(string);
+        System.out.println(s);
+        return s;
+    }
 }
