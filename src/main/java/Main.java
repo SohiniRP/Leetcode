@@ -1,5 +1,7 @@
 import java.util.*;
 
+import static java.lang.System.*;
+
 public class Main {
     public static void main(String[] args) {
 //        int[] arr = {1,1,2};
@@ -32,8 +34,17 @@ public class Main {
 //
 //        System.out.println((intersect(nums1,nums2)).toString());
 
-        String s = "abcdefg";
-        System.out.println(reverseStr(s,2));
+//        String s = "abcdefg";
+//        System.out.println(reverseStr(s,2));
+
+//        String s = "loveleetcode";
+//        System.out.println(shortestToChar(s, 'e'));
+
+//        int[] nums ={3,5,4,2,4,6};
+//        System.out.println(minPairSum(nums));
+
+        int[] nums = {1,1,1,2,2,3};
+        removeDuplicates2(nums);
     }
 
     //1. Two Sum:
@@ -450,36 +461,119 @@ public class Main {
 
     //541. Reverse String II
     public static String reverseStr(String s, int k) {
-        int length = s.length();
-        int i =0;
-        while(i<length) {
-            if (length < k) {
-                reverse(s, k);
-                i=length;
-            } else if (length >= k && length < 2 * k) {
-                reverse(s.substring(i, k + 1), k);
-                length = length-k;
-                i=k;
-            } else {
-                s = reverse(s.substring(i, 2 * k), k);
-                length = length-2 * k;
-                i=2*k;
-            }
-        }
+//        int numOfChars = s.length();
+//        char[] arr = s.toCharArray();
+//
+//        for(int i = 0; i<s.length(); i++){
+//            if(numOfChars<k){
+//                reverseArr(arr,0, numOfChars);
+//            } else if(numOfChars<2*k){
+//
+//            } else{
+//
+//            }
+//        }
+//        while(i<length) {
+//            if (length < k) {
+//                reverse(s, k);
+//                i=length;
+//            } else if (length >= k && length < 2 * k) {
+//                reverse(s.substring(i, k + 1), k);
+//                length = length-k;
+//                i=k;
+//            } else {
+//                s = reverse(s.substring(i, 2 * k), k);
+//                length = length-2 * k;
+//                i=2*k;
+//            }
+//        }
         return s;
     }
 
-    public static String reverse(String s, int k){
-        char[] string = s.toCharArray();
-        int i=0;int j=k-1;
+    public static char[] reverseArr(char[] arr, int start, int end){
+        int i=start;int j=end;
         while(i<=j){
-            char temp = string[i];
-            string[i] =string[j];
-            string[j]=temp;
+            char temp = arr[i];
+            arr[i] =arr[j];
+            arr[j]=temp;
             i++;j--;
         }
-        s = new String(string);
-        System.out.println(s);
-        return s;
+        return arr;
+    }
+
+    //821. Shortest Distance to a Character
+    public static int[] shortestToChar(String s, char c) {
+        int[] answer = new int[s.length()];
+        int i=0;int j=0;
+        while(i<s.length() && j<s.length()){
+            if(s.charAt(j)==c){
+                answer[i]=Math.abs(i-j);
+                i++;
+            }  else j++;
+            if(i<s.length() && s.charAt(i)==c && j!=i) j=i;
+        }
+
+        i=s.length()-1;j=s.length()-1;
+        while(i>=0 && j>=0){
+            if(s.charAt(j)==c){
+                answer[i]=Math.min(answer[i],Math.abs(i-j));
+                i--;
+            }  else j--;
+            if(i>=0 && s.charAt(i)==c && j!=i) j=i;
+        }
+        return answer;
+    }
+
+    //832. Flipping an Image
+    public int[][] flipAndInvertImage(int[][] image) {
+        for(int i=0;i<image.length;i++){
+            int k = image[0].length-1;
+            for(int j=0;j<image[0].length/2;j++){
+                int temp = image[i][j];
+                image[i][j] = image[i][k];
+                image[i][k] = temp;
+                k--;
+            }
+        }
+        for(int i=0;i<image.length;i++){
+            for(int j=0;j<image[0].length;j++){
+                if(image[i][j]==0) image[i][j]=1;
+                else image[i][j]=0;
+            }
+        }
+        return image;
+    }
+
+    //1877. Minimize Maximum Pair Sum in Array
+    public static int minPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int[] pair = new int[nums.length/2];
+        int j=nums.length-1;
+        for(int i=0;i<nums.length/2;i++){
+            pair[i] = nums[i]+nums[j];
+            j--;
+        }
+        int res =pair[0];
+        for(int i=1;i<pair.length;i++){
+            res = Math.max(pair[i], res);
+        }
+        return res;
+    }
+
+    public static int removeDuplicates2(int[] nums) {
+        int i=0;int j=1;
+        int count =1;
+        while(i<=j){
+            if(nums[i]==nums[j]){
+                count++;j++;i++;
+            }
+            if(count>2){
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                j++;
+            }
+        }
+        return i;
     }
 }
