@@ -43,8 +43,10 @@ public class Main {
 //        int[] nums ={3,5,4,2,4,6};
 //        System.out.println(minPairSum(nums));
 
-        int[] nums = {1,1,1,2,2,3};
-        removeDuplicates2(nums);
+//        int[] nums = {1,1,1,2,2,3};
+//        removeDuplicates2(nums);
+
+
     }
 
     //1. Two Sum:
@@ -565,15 +567,61 @@ public class Main {
         int count =1;
         while(i<=j){
             if(nums[i]==nums[j]){
+//                if(nums[j]!=nums[j-1]){
+//                    int temp = nums[j-1];
+//                    nums[j-1] = nums[j];
+//                    nums[j] = temp;
+//                }
                 count++;j++;i++;
             }
-            if(count>2){
-                int temp = nums[i];
-                nums[i] = nums[j];
-                nums[j] = temp;
+            if(count>=2){
+                int j1=j;
+                for(int j2=i;j2<nums.length-1;j2++){
+                    int temp = nums[j2];
+                    nums[j2] = nums[j1];
+                    nums[j1] = temp;
+                    j1++;
+                }
+            }
+            if(count>=2) {
+                count = 1;
+                i++;
                 j++;
             }
         }
         return i;
+    }
+
+    //151. Reverse Words in a String
+    public static String reverseWord(String s) {
+        String[] words = s.trim().split("\\s+");
+        StringBuilder result = new StringBuilder();
+
+        for (int i = words.length - 1; i >= 0; i--) {
+            result.append(words[i]);
+            if (i != 0) result.append(" ");
+        }
+
+        return result.toString();
+    }
+
+    //189. Rotate Array
+    public static void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+
+        reverse(nums, 0, n - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, n - 1);
+    }
+
+    public static void reverse(int[] nums, int left, int right) {
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
     }
 }
