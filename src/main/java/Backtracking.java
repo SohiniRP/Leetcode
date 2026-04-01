@@ -51,6 +51,7 @@ public class Backtracking {
         backtrackAllPath(graph, 0, current, result);
 
         return result;
+
     }
 
     public static void backtrackAllPath(int[][] graph, int node, List<Integer> current, List<List<Integer>> result) {
